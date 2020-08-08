@@ -27,4 +27,4 @@ const LivroSchema = new Schema({
         timestamps: true
     }
 )
-module.exports = modeel('livroschema', LivroSchema)
+module.exports = model('livroschema', LivroSchema)
