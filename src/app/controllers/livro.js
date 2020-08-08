@@ -31,5 +31,15 @@ class Livro {
             }
         })
     }
+
+    put(req, res) {
+        livroschema.updateOne({ nome: req.params.nome }, { $set: req.body }, (err) => {
+            if (err) {
+                res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
+            } else {
+                res.status(200).json({ message: "Livro atualizado com sucesso" })
+            }
+        })
+    }
 }
 module.exports = new Livro()
