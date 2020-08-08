@@ -21,4 +21,6 @@ app.get('/', (req, res) => {
     res.send({ message: `API books-api ouvindo na porta ${PORT}` })
 })
 
+app.use('*', (req, res) => res.send({ message: 'API não encontrada' }))
+
 app.listen(PORT, () => console.log(`API ouvindo na porta ${PORT}`))
