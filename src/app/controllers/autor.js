@@ -16,19 +16,7 @@ class Autor {
         })
     }
 
-    create(req, res) {
-        const reqBody = req.body
-
-        autor.create(reqBody, (err) => {
-            if (err) {
-                res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
-            } else {
-                res.status(201).json({ message: "Autor criado com sucesso" })
-            }
-        })
-    }
-
-    booksByAuthor(req, res) {
+    findById(req, res) {
         const { idAuthor } = req.params
 
         autor.findById(idAuthor)
@@ -44,6 +32,18 @@ class Autor {
                     }
                 }
             })
+    }
+
+    create(req, res) {
+        const reqBody = req.body
+
+        autor.create(reqBody, (err) => {
+            if (err) {
+                res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
+            } else {
+                res.status(201).json({ message: "Autor criado com sucesso" })
+            }
+        })
     }
 
 }
