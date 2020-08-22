@@ -3,7 +3,7 @@ const autor = require('./../models/autor')
 class Autor {
 
     findAll(req, res) {
-        autor.find({}, (err, data) => {
+        autor.find({}, { livros: 0 }, (err, data) => {
             if (err) {
                 res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
             } else {
@@ -31,7 +31,7 @@ class Autor {
     booksByAuthor(req, res) {
         const { idAuthor } = req.params
 
-        autor.findById(idAuthor, { livros: 1, nome: 1 })
+        autor.findById(idAuthor)
             .populate('livros')
             .exec((err, data) => {
                 if (err) {
