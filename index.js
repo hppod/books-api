@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
     res.send({ message: `API books-api ouvindo na porta ${PORT}` })
 })
 
-app.use("/livros", LivroRoutes)
+app.use("/livro", LivroRoutes)
 app.use('/autor', AutorRoutes)
 
 app.use('*', (req, res) => res.send({ message: 'API não encontrada' }))

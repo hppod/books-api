@@ -1,9 +1,10 @@
-const livroschema = require('./../models/livro')
+const livro = require('./../models/livro')
+const autor = require('./../models/autor')
 
 class Livro {
 
     get(req, res) {
-        livroschema.find({}, (err, data) => {
+        livro.find({}, (err, data) => {
             if (err) {
                 res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
             } else {
@@ -13,7 +14,7 @@ class Livro {
     }
 
     getByName(req, res) {
-        livroschema.find({ nome: req.params.nome }, (err, data) => {
+        livro.find({ nome: req.params.nome }, (err, data) => {
             if (err) {
                 res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
             } else {
@@ -22,18 +23,35 @@ class Livro {
         })
     }
 
-    post(req, res) {
-        livroschema.create(req.body, (err) => {
+    create(req, res) {
+        const reqBody = req.body
+        const idAuthor = reqBody['autor']
+
+        livro.create(reqBody, (err, livro) => {
             if (err) {
                 res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
             } else {
-                res.status(201).json({ message: "Livro criado com sucesso" })
+                autor.findById(idAuthor, (err, author) => {
+                    if (err) {
+                        res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
+                    } else {
+                        author.livros.push(livro)
+                        author.save({}, (err) => {
+                            if (err) {
+                                res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
+                            } else {
+                                res.status(201).json({ message: "Livro criado com sucesso" })
+                            }
+                        })
+                    }
+                })
             }
         })
+
     }
 
     put(req, res) {
-        livroschema.updateOne({ nome: req.params.nome }, { $set: req.body }, (err) => {
+        livro.updateOne({ nome: req.params.nome }, { $set: req.body }, (err) => {
             if (err) {
                 res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
             } else {
@@ -43,7 +61,7 @@ class Livro {
     }
 
     delete(req, res) {
-        livroschema.deleteOne({ nome: req.params.nome }, (err) => {
+        livro.deleteOne({ nome: req.params.nome }, (err) => {
             if (err) {
                 res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
             } else {
