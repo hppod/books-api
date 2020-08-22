@@ -30,6 +30,9 @@ const LivroSchema = new Schema({
     autor: {
         type: Schema.Types.ObjectId,
         ref: 'Autor'
+    },
+    gostei: {
+        type: Boolean
     }
 },
     {
