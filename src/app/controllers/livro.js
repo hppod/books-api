@@ -64,24 +64,24 @@ class Livro {
 
     }
 
-    put(req, res) {
-        livro.updateOne({ nome: req.params.nome }, { $set: req.body }, (err) => {
-            if (err) {
-                res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
-            } else {
-                res.status(200).json({ message: "Livro atualizado com sucesso" })
-            }
-        })
-    }
+    // put(req, res) {
+    //     livro.updateOne({ nome: req.params.nome }, { $set: req.body }, (err) => {
+    //         if (err) {
+    //             res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
+    //         } else {
+    //             res.status(200).json({ message: "Livro atualizado com sucesso" })
+    //         }
+    //     })
+    // }
 
-    delete(req, res) {
-        livro.deleteOne({ nome: req.params.nome }, (err) => {
-            if (err) {
-                res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
-            } else {
-                res.status(200).json({ message: "Livro apagado com sucesso" })
-            }
-        })
-    }
+    // delete(req, res) {
+    //     livro.deleteOne({ nome: req.params.nome }, (err) => {
+    //         if (err) {
+    //             res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
+    //         } else {
+    //             res.status(200).json({ message: "Livro apagado com sucesso" })
+    //         }
+    //     })
+    // }
 }
 module.exports = new Livro()
