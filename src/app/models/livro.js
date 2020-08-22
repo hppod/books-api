@@ -4,14 +4,19 @@ const LivroSchema = new Schema({
     nome: {
         type: String,
         required: true,
-        maxlength: 500,
+        maxlength: 200,
+        trim: true
+    },
+    sinopse: {
+        type: String,
+        required: true,
         trim: true
     },
     paginas: {
         type: Number,
         required: false
     },
-    autor: {
+    imagem: {
         type: String,
         required: true,
         trim: true
@@ -19,7 +24,12 @@ const LivroSchema = new Schema({
     editora: {
         type: String,
         required: true,
+        maxlength: 200,
         trim: true
+    },
+    autor: {
+        type: Schema.Types.ObjectId,
+        ref: 'Autor'
     }
 },
     {
@@ -27,4 +37,4 @@ const LivroSchema = new Schema({
         timestamps: true
     }
 )
-module.exports = model('livroschema', LivroSchema)
+module.exports = model('Livro', LivroSchema)
