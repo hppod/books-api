@@ -5,6 +5,7 @@ const cors = require("cors")
 const PORT = process.env.PORT || 3000
 const database = require("./src/config/database")
 const LivroRoutes = require("./src/app/routes/livro")
+const AutorRoutes = require('./src/app/routes/autor')
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.text())
@@ -23,8 +24,9 @@ app.get('/', (req, res) => {
     res.send({ message: `API books-api ouvindo na porta ${PORT}` })
 })
 
-app.use("/livros", LivroRoutes)
+app.use("/livro", LivroRoutes)
+app.use('/autor', AutorRoutes)
 
-app.use('*', (req, res) => res.send({ message: 'API não encontrada' }))
+app.use('*', (req, res) => res.status(404).send({ message: 'API não encontrada' }))
 
 app.listen(PORT, () => console.log(`API ouvindo na porta ${PORT}`))
