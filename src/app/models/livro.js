@@ -33,6 +33,16 @@ const LivroSchema = new Schema({
     },
     gostei: {
         type: Boolean
+    },
+    isbn10: {
+        type: String,
+        required: false,
+        trim: true
+    },
+    isbn13: {
+        type: String,
+        required: false,
+        trim: true
     }
 },
     {
