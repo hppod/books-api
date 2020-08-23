@@ -27,6 +27,6 @@ app.get('/', (req, res) => {
 app.use("/livro", LivroRoutes)
 app.use('/autor', AutorRoutes)
 
-app.use('*', (req, res) => res.send({ message: 'API não encontrada' }))
+app.use('*', (req, res) => res.status(404).send({ message: 'API não encontrada' }))
 
 app.listen(PORT, () => console.log(`API ouvindo na porta ${PORT}`))
