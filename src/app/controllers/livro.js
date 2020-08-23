@@ -20,10 +20,10 @@ class Livro {
     }
 
     findById(req, res) {
-        const { idBook } = req.params
+        const { nameBook } = req.params
 
-        livro.findById(idBook)
-            .populate('autor', { nome: 1 })
+        livro.findOne({ nome: nameBook })
+            .populate('autor', { nome: 1, imagem: 1 })
             .exec((err, data) => {
                 if (err) {
                     res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
