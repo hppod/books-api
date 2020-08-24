@@ -32,9 +32,6 @@ const LivroSchema = new Schema({
         ref: 'Autor',
         required: true
     },
-    gostei: {
-        type: Boolean
-    },
     isbn10: {
         type: String,
         required: false,
