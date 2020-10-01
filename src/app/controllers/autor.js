@@ -19,9 +19,9 @@ class Autor {
     }
 
     findById(req, res) {
-        const { idAuthor } = req.params
+        const { nameAuthor } = req.params
 
-        autor.findById(idAuthor)
+        autor.findOne({ nome: nameAuthor })
             .populate('livros')
             .exec((err, data) => {
                 if (err) {
