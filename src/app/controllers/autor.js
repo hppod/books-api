@@ -3,7 +3,7 @@ const autor = require('./../models/autor')
 class Autor {
 
     findAll(req, res) {
-        autor.find({}, { livros: 0 })
+        autor.find({})
             .sort({ nome: 1 })
             .exec((err, data) => {
                 if (err) {
@@ -27,11 +27,7 @@ class Autor {
                 if (err) {
                     res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
                 } else {
-                    if (data['livros'].length <= 0) {
-                        res.status(200).json({ message: "Não foram encontrados livros do autor para listar" })
-                    } else {
-                        res.status(200).json({ message: "Livros do autor recuperados com sucesso", data: data })
-                    }
+                    res.status(200).json({ message: "Autor recuperado com sucesso", data: data })
                 }
             })
     }
