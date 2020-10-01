@@ -44,6 +44,22 @@ class Autor {
         })
     }
 
+    validatorNomeAutor(req, res) {
+        const nome = req.query.nome.replace(/%20/g, " ")
+
+        autor.find({ nome: { '$regex': `^${nome}$`, '$options': 'i' } }, function (err, result) {
+            if (err) {
+                res.status(500).send({ message: "Houve um erro ao processar sua requisição", error: err })
+            } else {
+                if (result.length > 0) {
+                    res.status(200).send({ message: "Já existe um autor com esse nome", data: result.length })
+                } else {
+                    res.status(200).send({ message: "Autor disponível", data: result.length })
+                }
+            }
+        })
+    }
+
 }
 
 module.exports = new Autor()
