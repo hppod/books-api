@@ -44,18 +44,18 @@ class Livro {
 
     create(req, res) {
         const reqBody = req.body
-        const idAuthor = reqBody['autor']
+        const idAutor = reqBody['autor']
 
         livro.create(reqBody, (err, livro) => {
             if (err) {
                 res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
             } else {
-                autor.findById(idAuthor, (err, author) => {
+                autor.findById(idAutor, (err, autor) => {
                     if (err) {
                         res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
                     } else {
-                        author.livros.push(livro)
-                        author.save({}, (err) => {
+                        autor.livros.push(livro)
+                        autor.save({}, (err) => {
                             if (err) {
                                 res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
                             } else {
@@ -84,6 +84,46 @@ class Livro {
             }
         })
     }
-    
+
+    update(req, res) {
+        const { bookId } = req.params
+        const reqBody = req.body
+        const idAutor = reqBody['autor']
+
+        livro.updateOne({ _id: bookId }, { $set: reqBody }, (err, livro) => {
+            if (err) {
+                res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
+            } else {
+                autor.findOne({ livros: bookId }, (err, autorF) => {
+                    if (err) {
+                        res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
+                    } else {
+                        if (autor['_id'] == idAutor) {
+                            res.status(200).json({ message: "Livro atualizado com sucesso", data: livro })
+                        } else {
+                            autorF.livros.pull(bookId)
+                            autorF.save({}, (err) => {
+                                if (err) {
+                                    res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
+                                } else {
+                                    autor.findById(idAutor, (err, autor) => {
+                                        autor.livros.push(bookId)
+                                        autor.save({}, (err) => {
+                                            if (err) {
+                                                res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
+                                            } else {
+                                                res.status(200).json({ message: "Livro atualizado com sucesso", data: livro })
+                                            }
+                                        })
+                                    })
+                                }
+                            })
+                        }
+                    }
+                })
+            }
+        })
+    }
+
 }
 module.exports = new Livro()
