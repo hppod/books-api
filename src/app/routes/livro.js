@@ -7,5 +7,6 @@ route.get("/listarUm/:bookName", Livro.findById)
 route.post("/criar", Livro.create)
 route.get('/validarNomeLivro', Livro.validatorNomeLivro)
 route.put('/atualizar/:bookId', Livro.update)
+route.delete('/apagar/:bookId', Livro.delete)
 
 module.exports = route

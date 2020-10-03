@@ -44,13 +44,13 @@ class Livro {
 
     create(req, res) {
         const reqBody = req.body
-        const idAutor = reqBody['autor']
+        const authorId = reqBody['autor']
 
         livro.create(reqBody, (err, livro) => {
             if (err) {
                 res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
             } else {
-                autor.findById(idAutor, (err, autor) => {
+                autor.findById(authorId, (err, autor) => {
                     if (err) {
                         res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
                     } else {
@@ -88,7 +88,7 @@ class Livro {
     update(req, res) {
         const { bookId } = req.params
         const reqBody = req.body
-        const idAutor = reqBody['autor']
+        const authorId = reqBody['autor']
 
         livro.updateOne({ _id: bookId }, { $set: reqBody }, (err, livro) => {
             if (err) {
@@ -98,7 +98,7 @@ class Livro {
                     if (err) {
                         res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
                     } else {
-                        if (autor['_id'] == idAutor) {
+                        if (autor['_id'] == authorId) {
                             res.status(200).json({ message: "Livro atualizado com sucesso", data: livro })
                         } else {
                             autorF.livros.pull(bookId)
@@ -106,7 +106,7 @@ class Livro {
                                 if (err) {
                                     res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
                                 } else {
-                                    autor.findById(idAutor, (err, autor) => {
+                                    autor.findById(authorId, (err, autor) => {
                                         autor.livros.push(bookId)
                                         autor.save({}, (err) => {
                                             if (err) {
@@ -122,6 +122,27 @@ class Livro {
                     }
                 })
             }
+        })
+    }
+
+    delete(req, res) {
+        const { bookId } = req.params
+
+        autor.findOne({ livros: bookId }, (err, autor) => {
+            autor.livros.pull(bookId)
+            autor.save((err) => {
+                if (err) {
+                    res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
+                } else {
+                    livro.deleteOne({ _id: bookId }, (err, result) => {
+                        if (err) {
+                            res.status(500).json({ message: "Houve um erro ao processar sua requisição", error: err })
+                        } else {
+                            res.status(200).json({ message: "Livro apagado com sucesso", data: result })
+                        }
+                    })
+                }
+            })
         })
     }
 
